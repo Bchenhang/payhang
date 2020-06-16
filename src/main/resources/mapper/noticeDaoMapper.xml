@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weixin.pay.dao.NoticeDao">
+    <resultMap id="BaseResult" type="com.weixin.pay.pojo.notice">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="appid" jdbcType="VARCHAR" property="appid" />
+        <result column="iccid" jdbcType="VARCHAR" property="iccid" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="content" jdbcType="VARCHAR" property="content" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="notifytime" jdbcType="VARCHAR" property="notifytime" />
+    </resultMap>
+    <select id="selectNotice" parameterType="java.lang.String" resultMap="BaseResult">
+        select * from notice t where t.appid=#{appid} and t.iccid=#{iccid} and  t.notifytime > #{notifytime} ORDER BY notifytime
+    </select>
+    <insert id="addNotice" parameterType="com.weixin.pay.pojo.notice" useGeneratedKeys="true" keyProperty="id">
+        insert into notice(appid,iccid,title,content,remark,notifytime)
+             values(#{appid},#{iccid},#{title},#{content},#{remark},#{notifytime})
+    </insert>
+</mapper>

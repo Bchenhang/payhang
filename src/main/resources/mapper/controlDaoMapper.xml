@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weixin.pay.dao.ControlDao">
+    <resultMap id="BaseResult" type="com.weixin.pay.pojo.control">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="appid" jdbcType="VARCHAR" property="appid" />
+        <result column="iccid" jdbcType="VARCHAR" property="iccid" />
+        <result column="type" jdbcType="VARCHAR" property="type" />
+        <result column="cardno" jdbcType="VARCHAR" property="cardno" />
+        <result column="clockno" jdbcType="VARCHAR" property="clockno" />
+        <result column="area" jdbcType="VARCHAR" property="area" />
+        <result column="attendtime" jdbcType="VARCHAR" property="attendtime" />
+        <result column="flag" jdbcType="VARCHAR" property="flag" />
+        <result column="urlimage" jdbcType="VARCHAR" property="urlimage" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="uploadtime" jdbcType="VARCHAR" property="uploadtime" />
+    </resultMap>
+    <select id="selectControl" parameterType="java.lang.String" resultMap="BaseResult">
+            select * from passrec t where t.iccid = #{iccid} and  t.appid = #{appid}
+            <if test="attendtime!=null and attendtime!=''">
+                and t.attendtime >= #{attendtime}
+            </if>
+            <if test="attendtimes!=null and attendtimes!=''">
+                and t.attendtime &lt; #{attendtimes}
+            </if>
+            group by attendtime DESC LIMIT 0, 20
+    </select>
+    <select id="selectCpaicong" parameterType="java.lang.String" resultMap="BaseResult">
+        select * from passrec t where
+        1=1
+        <if test="iccid!=null and iccid!=''">
+            and t.iccid = #{iccid}
+        </if>
+        <if test="appid!=null and appid!=''">
+            and t.appid = #{appid}
+        </if>
+        <if test="attendtime!=null and attendtime!=''">
+            and t.attendtime = #{attendtime}
+        </if>
+        <if test="flag!=null">
+            and t.flag = #{flag}
+        </if>
+        LIMIT 1
+
+    </select>
+    <insert id="addControl" parameterType="com.weixin.pay.pojo.control" useGeneratedKeys="true" keyProperty="id">
+        insert into passrec(appid,iccid,type,cardno,clockno,area,attendtime,flag,urlimage,remark,uploadtime)
+             values(#{appid},#{iccid},#{type},#{cardno},#{clockno},#{area},#{attendtime},#{flag},#{urlimage},#{remark},#{uploadtime})
+    </insert>
+</mapper>

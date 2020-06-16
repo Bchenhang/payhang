@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weixin.pay.dao.MpconfigDao">
+    <resultMap id="BaseResult" type="com.weixin.pay.pojo.mpconfig">
+        <id column="appid" jdbcType="VARCHAR" property="appid" />
+        <result column="appname" jdbcType="VARCHAR" property="appname" />
+        <result column="secret" jdbcType="VARCHAR" property="secret" />
+        <result column="mchid" jdbcType="VARCHAR" property="mchid" />
+        <result column="mchkey" jdbcType="VARCHAR" property="mchkey" />
+        <result column="mackey" jdbcType="VARCHAR" property="mackey" />
+        <result column="tempid1" jdbcType="VARCHAR" property="tempid1" />
+        <result column="tempid2" jdbcType="VARCHAR" property="tempid2" />
+        <result column="tempid3" jdbcType="VARCHAR" property="tempid3" />
+        <result column="tempid4" jdbcType="VARCHAR" property="tempid4" />
+        <result column="tempid5" jdbcType="VARCHAR" property="tempid5" />
+        <result column="tempid6" jdbcType="VARCHAR" property="tempid6" />
+        <result column="tempid7" jdbcType="VARCHAR" property="tempid7" />
+        <result column="tempid8" jdbcType="VARCHAR" property="tempid8" />
+        <result column="tempid9" jdbcType="VARCHAR" property="tempid9" />
+        <result column="tempid10" jdbcType="VARCHAR" property="tempid10" />
+        <result column="param" jdbcType="VARCHAR" property="param" />
+        <result column="token" jdbcType="VARCHAR" property="token" />
+        <result column="tokentime" jdbcType="VARCHAR" property="tokentime" />
+    </resultMap>
+    <select id="selectconfig" parameterType="java.lang.String" resultMap="BaseResult">
+        select * from client t where t.appid = #{appid}
+    </select>
+    <select id="selectkey" parameterType="java.lang.String" resultMap="BaseResult">
+        select * from client t where t.appid = #{appid}
+    </select>
+    <update id="updatMpconfig1" parameterType="com.weixin.pay.pojo.mpconfig" >
+        update client set tempid1=#{tempid1} where appid=#{appid}
+    </update>
+    <update id="updatMpconfig2" parameterType="com.weixin.pay.pojo.mpconfig" >
+        update client set tempid2=#{tempid2} where appid=#{appid}
+    </update>
+    <update id="updatMpconfig3" parameterType="com.weixin.pay.pojo.mpconfig" >
+        update client set tempid3=#{tempid3} where appid=#{appid}
+    </update>
+    <update id="updatMpconfig4" parameterType="com.weixin.pay.pojo.mpconfig" >
+        update client set tempid4=#{tempid4} where appid=#{appid}
+    </update>
+    <update id="updatMpconfig5" parameterType="com.weixin.pay.pojo.mpconfig" >
+        update client set tempid5=#{tempid5} where appid=#{appid}
+    </update>
+    <update id="updatMpconfig6" parameterType="com.weixin.pay.pojo.mpconfig" >
+        update client set tempid5=#{tempid6} where appid=#{appid}
+    </update>
+    <update id="updatMpconfig7" parameterType="com.weixin.pay.pojo.mpconfig" >
+        update client set tempid5=#{tempid7} where appid=#{appid}
+    </update>
+    <update id="updateToken" parameterType="com.weixin.pay.pojo.mpconfig" >
+        update client set token=#{token},tokentime=#{tokentime} where appid=#{appid}
+    </update>
+</mapper>

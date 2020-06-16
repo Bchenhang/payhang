@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weixin.pay.dao.TransactionDao">
+    <resultMap id="BaseResult" type="com.weixin.pay.pojo.transaction">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="appid" jdbcType="VARCHAR" property="appid" />
+        <result column="iccid" jdbcType="VARCHAR" property="iccid" />
+        <result column="type" jdbcType="VARCHAR" property="type" />
+        <result column="cardno" jdbcType="VARCHAR" property="cardno" />
+        <result column="clockno" jdbcType="VARCHAR" property="clockno" />
+        <result column="area" jdbcType="VARCHAR" property="area" />
+        <result column="attendtime" jdbcType="VARCHAR" property="attendtime" />
+        <result column="flag" jdbcType="VARCHAR" property="flag" />
+        <result column="amount" jdbcType="VARCHAR" property="amount" />
+        <result column="balance" jdbcType="VARCHAR" property="balance" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="uploadtime" jdbcType="VARCHAR" property="uploadtime" />
+    </resultMap>
+    <select id="selectTransaction" parameterType="java.lang.String" resultMap="BaseResult">
+        select * from transaction t where t.iccid = #{iccid} and  t.appid = #{appid}
+        <if test="attendtime!=null and attendtime!=''">
+            and t.attendtime >= #{attendtime}
+        </if>
+        <if test="attendtimes!=null and attendtimes!=''">
+            and t.attendtime &lt; #{attendtimes}
+        </if>
+        group by attendtime DESC
+    </select>
+    <select id="Tpaicong" parameterType="java.lang.String" resultMap="BaseResult">
+        select * from transaction t where 1=1
+        <if test="iccid!=null and iccid!=''">
+            and t.iccid = #{iccid}
+        </if>
+        <if test="appid!=null and appid!=''">
+            and t.appid = #{appid}
+        </if>
+        <if test="attendtime!=null and attendtime!=''">
+            and t.attendtime = #{attendtime}
+        </if>
+        <if test="flag &gt;=  0 ">
+            and t.flag &gt;= 0
+        </if>
+        <if test="flag lt 0 ">
+            and t.flag &lt; 0
+        </if>
+        LIMIT 1
+    </select>
+    <insert id="addTransaction" parameterType="com.weixin.pay.pojo.transaction" useGeneratedKeys="true" keyProperty="id">
+        insert into transaction(appid,iccid,type,cardno,clockno,area,attendtime,flag,amount,balance,remark,uploadtime)
+        values(#{appid},#{iccid},#{type},#{cardno},#{clockno},#{area},#{attendtime},#{flag},#{amount},#{balance},#{remark},#{uploadtime})
+    </insert>
+</mapper>

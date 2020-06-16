@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weixin.pay.dao.UserDao">
+    <resultMap id="BaseResult" type="com.weixin.pay.pojo.User">
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="operid" jdbcType="VARCHAR" property="operid" />
+        <result column="appid" jdbcType="VARCHAR" property="appid" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="imgurl" jdbcType="VARCHAR" property="imgurl" />
+        <result column="status" jdbcType="VARCHAR" property="status" />
+        <result column="kind" jdbcType="VARCHAR" property="kind" />
+    </resultMap>
+
+   <!-- <select id="selectUser" parameterType="java.lang.String" resultMap="BaseResult">
+        select * from user t where t.name = #{name} and t.password = #{password}
+    </select>-->
+    <select id="selectOperid" parameterType="java.lang.String" resultMap="BaseResult">
+        select * from user t where t.operid = #{operid} and t.appid = #{appid} order by status desc LIMIT 1
+    </select>
+    <select id="selectfangke" parameterType="java.lang.String" resultMap="BaseResult">
+        select * from user t where t.operid = #{operid} and t.appid = #{appid} and status=3
+    </select>
+    <select id="selectyh" parameterType="java.lang.String" resultMap="BaseResult">
+        select * from user t where t.operid = #{operid} and t.appid = #{appid} order by status desc
+    </select>
+    <select id="selectjs" parameterType="java.lang.String" resultMap="BaseResult">
+        select * from user t where t.operid = #{operid} and t.appid = #{appid} and t.iccid = #{iccid}
+    </select>
+    <select id="selectTsop" parameterType="java.lang.String" resultMap="BaseResult">
+        select name,operid from user t where t.iccid = #{iccid} and t.appid = #{appid}
+    </select>
+    <select id="selectUser" parameterType="java.lang.String" resultMap="BaseResult">
+        select * from user t where t.name = #{name} and t.iccid = #{iccid}
+    </select>
+    <insert id="addUser" parameterType="com.weixin.pay.pojo.User" >
+        insert into user (name,iccid,operid,appid,password,status)
+             values(#{name},#{iccid},#{operid},#{appid},#{password},#{status})
+    </insert>
+    <delete id="deleteUser" parameterType="com.weixin.pay.pojo.User">
+        delete from user where operid=#{operid} and appid=#{appid} and iccid = #{iccid}
+    </delete>
+    <update id="updateUser" parameterType="com.weixin.pay.pojo.User" >
+        update user set name=#{name},iccid=#{iccid},password=#{password},status=#{status} where appid=#{appid} and operid=#{operid} and iccid=#{iccid}
+    </update>
+    <update id="updateA" parameterType="com.weixin.pay.pojo.User" >
+        update user set status=0 where appid=#{appid} and operid=#{operid}
+    </update>
+    <update id="updateB" parameterType="com.weixin.pay.pojo.User" >
+        update user set status=1 where appid=#{appid} and operid=#{operid} and iccid = #{iccid}
+    </update>
+    <update id="updateUrl" parameterType="com.weixin.pay.pojo.User" >
+        update user set imgurl=#{imgurl} where appid=#{appid} and operid=#{operid} and iccid = #{iccid}
+    </update>
+<!--修改用户等级-->
+    <update id="updateKind" parameterType="com.weixin.pay.pojo.User" >
+        update user set kind=#{kind} where appid=#{appid} and operid=#{operid} and iccid = #{iccid}
+    </update>
+</mapper>
+

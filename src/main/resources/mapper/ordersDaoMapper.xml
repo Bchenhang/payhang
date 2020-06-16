@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weixin.pay.dao.OrdersDao">
+    <resultMap id="BaseResultMap" type="com.weixin.pay.pojo.orders">
+        <id column="orderid" jdbcType="VARCHAR" property="orderid" />
+        <result column="operid" jdbcType="VARCHAR" property="operid" />
+        <result column="iccid" jdbcType="VARCHAR" property="iccid" />
+        <result column="trade_type" jdbcType="VARCHAR" property="trade_type" />
+        <result column="total_fee" jdbcType="VARCHAR" property="total_fee" />
+        <result column="boty" jdbcType="VARCHAR" property="boty" />
+        <result column="paytime" jdbcType="VARCHAR" property="paytime" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="state" jdbcType="INTEGER" property="state" />
+        <result column="wxorderid" jdbcType="INTEGER" property="wxorderid" />
+        <result column="payotime" jdbcType="VARCHAR" property="payotime" />
+        <result column="appid" jdbcType="VARCHAR" property="appid" />
+        <result column="code" jdbcType="VARCHAR" property="code" />
+    </resultMap>
+
+    <select id="selectOrders" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from orders t where t.orderid = #{orderid}
+    </select>
+    <select id="selectPay" parameterType="java.lang.String" resultMap="BaseResultMap">
+       SELECT * FROM orders where operid =#{operid} and appid=#{appid} and iccid=#{iccid} and code=1
+        <if test="paytime!=null and paytime!=''">
+            and paytime >=#{paytime}
+        </if>
+        <if test="payotime!=null and payotime!=''">
+            and paytime &lt; #{payotime}
+        </if>
+        ORDER BY paytime DESC
+    </select>
+
+  <insert id="addOrders" parameterType="com.weixin.pay.pojo.orders" useGeneratedKeys="true" keyProperty="orderid">
+        insert into orders(orderid,operid,iccid,trade_type,total_fee,boty,paytime,status,state,wxorderid,payotime,appid)
+             values(#{orderid},#{operid},#{iccid},#{trade_type},#{total_fee},#{boty},#{paytime},#{status},#{state},#{wxorderid},#{payotime},#{appid})
+    </insert>
+
+   <update id="updateOrders" parameterType="com.weixin.pay.pojo.orders" >
+        update orders set status=1,wxorderid=#{wxorderid},payotime=#{payotime} where orderid=#{orderid}
+    </update>
+
+    <update id="updatestate" parameterType="com.weixin.pay.pojo.orders" >
+        update orders set state=1 where orderid=#{orderid} and status=1
+    </update>
+    <update id="updatemoney" parameterType="com.weixin.pay.pojo.orders" >
+        update orders set total_fee=#{total_fee} where orderid=#{orderid} and status=1
+    </update>
+
+    <delete id="deleteOrders" parameterType="com.weixin.pay.pojo.orders">
+        update orders set code=0  where orderid=#{orderid}
+    </delete>
+
+    <!-- <update id="updateOrders" parameterType="User" >
+        update orders set state=1 where out_trade_no=#{out_trade_no}
+    </update>
+
+    <delete id="deleteOrders" parameterType="int">
+        delete orders user where id=#{id}
+    </delete>-->
+
+</mapper>

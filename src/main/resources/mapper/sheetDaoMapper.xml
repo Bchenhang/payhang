@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weixin.pay.dao.SheetDao">
+    <resultMap id="BaseResult" type="com.weixin.pay.pojo.sheet">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="appid" jdbcType="VARCHAR" property="appid" />
+        <result column="iccid" jdbcType="VARCHAR" property="iccid" />
+        <result column="type" jdbcType="VARCHAR" property="type" />
+        <result column="cardno" jdbcType="VARCHAR" property="cardno" />
+        <result column="clockno" jdbcType="VARCHAR" property="clockno" />
+        <result column="area" jdbcType="VARCHAR" property="area" />
+        <result column="attendtime" jdbcType="VARCHAR" property="attendtime" />
+        <result column="attendtimes" jdbcType="VARCHAR" property="attendtimes" />
+        <result column="flag" jdbcType="VARCHAR" property="flag" />
+        <result column="urlimage" jdbcType="VARCHAR" property="urlimage" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="uploadtime" jdbcType="VARCHAR" property="uploadtime" />
+    </resultMap>
+    <select id="selectSheet" parameterType="java.lang.String" resultMap="BaseResult">
+        select * from attendance t where t.iccid = #{iccid} and  t.appid = #{appid}
+        <if test="attendtime!=null and attendtime!=''">
+            and t.attendtime >= #{attendtime}
+        </if>
+        <if test="attendtimes!=null and attendtimes!=''">
+            and t.attendtime &lt; #{attendtimes}
+        </if>
+        group by attendtime DESC LIMIT 0, 20
+    </select>
+    <select id="selectpaicong" parameterType="java.lang.String" resultMap="BaseResult">
+        select * from attendance t where 1=1
+        <if test="iccid!=null and iccid!=''">
+            and t.iccid = #{iccid}
+        </if>
+        <if test="appid!=null and appid!=''">
+            and t.appid = #{appid}
+        </if>
+        <if test="attendtime!=null and attendtime!=''">
+            and t.attendtime = #{attendtime}
+        </if>
+        LIMIT 1
+    </select>
+    <insert id="addSheet" parameterType="com.weixin.pay.pojo.sheet" useGeneratedKeys="true" keyProperty="id">
+        insert into attendance(appid,iccid,type,cardno,clockno,area,attendtime,flag,urlimage,remark,uploadtime)
+             values(#{appid},#{iccid},#{type},#{cardno},#{clockno},#{area},#{attendtime},#{flag},#{urlimage},#{remark},#{uploadtime})
+    </insert>
+
+</mapper>
